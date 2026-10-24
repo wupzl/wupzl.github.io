@@ -1,0 +1,65 @@
+name: Verify reading projects
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: bookshelf
+      - uses: actions/checkout@v4
+        with:
+          repository: wupzl/pytorch-apprentice
+          ref: main
+          path: pytorch-apprentice
+      - uses: actions/checkout@v4
+        with:
+          repository: wupzl/ai-era-reader
+          ref: main
+          path: ai-era-reader
+      - uses: actions/checkout@v4
+        with:
+          repository: wupzl/data-empire-reader
+          ref: main
+          path: data-empire-reader
+      - uses: actions/checkout@v4
+        with:
+          repository: wupzl/rag-empire-reader
+          ref: main
+          path: rag-empire-reader
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install browser checks
+        run: |
+          python -m pip install -r bookshelf/requirements-test.txt
+          python -m playwright install --with-deps chromium
+      - name: Verify bookshelf and all four readers
+        run: python bookshelf/verify.py
+      - name: Verify PyTorch reading features
+        shell: bash
+        run: |
+          python -m http.server 4174 --directory pytorch-apprentice/docs --bind 127.0.0.1 > "$RUNNER_TEMP/pytorch-reader-http.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          python pytorch-apprentice/verify.py
+      - name: Upload verification screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reading-projects-verification
+          path: |
+            bookshelf-validation/
+            pytorch-apprentice/test-results/
+          if-no-files-found: ignore
