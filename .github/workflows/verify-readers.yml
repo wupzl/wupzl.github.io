@@ -38,15 +38,22 @@ jobs:
           repository: wupzl/rag-empire-reader
           ref: main
           path: rag-empire-reader
+      - uses: actions/checkout@v4
+        with:
+          repository: wupzl/system-design-reader
+          ref: main
+          path: system-design-reader
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install browser checks
         run: |
-          python -m pip install -r bookshelf/requirements-test.txt
+          python -m pip install -r bookshelf/requirements-test.txt -r system-design-reader/requirements-test.txt
           python -m playwright install --with-deps chromium
-      - name: Verify bookshelf and all four readers
+      - name: Verify bookshelf and all five readers
         run: python bookshelf/verify.py
+      - name: Verify system design reader
+        run: python system-design-reader/verify.py
       - name: Verify PyTorch reading features
         shell: bash
         run: |
@@ -62,4 +69,5 @@ jobs:
           path: |
             bookshelf-validation/
             pytorch-apprentice/test-results/
+            system-design-reader/test-results/
           if-no-files-found: ignore
