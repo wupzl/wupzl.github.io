@@ -2,3 +2,5 @@
 
 :root[data-theme=white]{--bg:#fff;--paper:#fff;--ink:#202124;--text:#202124;--muted:#62676d;--line:#e3e6ea;--accent:#176a86;--soft:#f5f7f9;--code:#f6f8fa;color-scheme:light}:root[data-theme=white] body,:root[data-theme=white] header,:root[data-theme=white] aside,:root[data-theme=white] .sidebar{background:#fff;color:#202124}#theme{min-width:48px;width:auto!important}
 .cover-subtitle{display:block;font:500 21px/1.6 Georgia,SimSun,serif;margin-top:12px}
+
+.incident .cover{background:#a53d24;color:#fff2df}.incident .symbol{font-style:normal;right:50px}
