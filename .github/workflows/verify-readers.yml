@@ -48,6 +48,11 @@ jobs:
           repository: wupzl/online-troubleshooting-reader
           ref: main
           path: online-troubleshooting-reader
+      - uses: actions/checkout@v4
+        with:
+          repository: wupzl/coding-agent-reader
+          ref: main
+          path: coding-agent-reader
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -55,10 +60,12 @@ jobs:
         run: |
           python -m pip install -r bookshelf/requirements-test.txt -r system-design-reader/requirements-test.txt
           python -m playwright install --with-deps chromium
-      - name: Verify bookshelf and all six readers
+      - name: Verify bookshelf and all seven readers
         run: python bookshelf/verify.py
       - name: Verify production troubleshooting reader
         run: python online-troubleshooting-reader/verify.py
+      - name: Verify Coding Agent reading features
+        run: python coding-agent-reader/verify.py
       - name: Verify system design reader
         run: python system-design-reader/verify.py
       - name: Verify PyTorch reading features
@@ -78,4 +85,5 @@ jobs:
             pytorch-apprentice/test-results/
             system-design-reader/test-results/
             online-troubleshooting-reader/test-results/
+            coding-agent-reader/test-results/
           if-no-files-found: ignore

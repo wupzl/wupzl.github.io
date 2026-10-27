@@ -1,4 +1,4 @@
-"""Check the bookshelf and six sibling reader repositories without a web server."""
+"""Check the bookshelf and seven sibling reader repositories without a web server."""
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
@@ -18,6 +18,7 @@ PROJECTS = {
     'rag-empire-reader': '全书完结',
     'system-design-reader': '连载',
     'online-troubleshooting-reader': '连载',
+    'coding-agent-reader': '第一卷完',
 }
 
 
@@ -124,7 +125,7 @@ def main():
                 page.locator('.shelf-home').click()
                 assert page.url == BASE + '/'
 
-            # Walk a cycle through all six projects using the actual switch menu.
+            # Walk a cycle through all seven projects using the actual switch menu.
             projects = list(PROJECTS)
             page.goto(f'{BASE}/{projects[0]}/')
             for project in projects[1:] + projects[:1]:
@@ -154,7 +155,7 @@ def main():
             context.close()
             print(f'PASS: {len(pages)} pages at {width}px', flush=True)
         browser.close()
-    print(f'PASS: home + {len(pages) - 1} reader pages; six project counts/statuses, local links/anchors/resources, menus, cross-project navigation, home links, three themes, no overflow or JS errors.')
+    print(f'PASS: home + {len(pages) - 1} reader pages; seven project counts/statuses, local links/anchors/resources, menus, cross-project navigation, home links, three themes, no overflow or JS errors.')
 
 
 if __name__ == '__main__':
