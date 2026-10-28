@@ -4,3 +4,6 @@
 .cover-subtitle{display:block;font:500 21px/1.6 Georgia,SimSun,serif;margin-top:12px}
 
 .incident .cover{background:#a53d24;color:#fff2df}.incident .symbol{font-style:normal;right:50px}
+
+/* 面试官的审判：纸质卷宗与暗红证据印记。 */
+.project.tribunal .cover{background:#e6dece;color:#8c302b}.project.tribunal .symbol{font-family:SimSun,serif;opacity:.85}.project.tribunal .category{color:#8c302b}html[data-theme="dark"] .project.tribunal .category{color:#e49c8e}
