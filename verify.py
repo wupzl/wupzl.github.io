@@ -1,4 +1,4 @@
-"""Check the bookshelf and eight sibling reader repositories without a web server."""
+"""Check the bookshelf and nine sibling reader repositories without a web server."""
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
@@ -20,6 +20,7 @@ PROJECTS = {
     'online-troubleshooting-reader': '连载',
     'coding-agent-reader': '第一卷完',
     'interview-proof-reader': '连载',
+    'langchain-empire-reader': '连载',
 }
 
 
@@ -109,6 +110,7 @@ def main():
                 assert card.locator('.tags > span').first.inner_text().split(' · ')[0] == f'{chapter_counts[project]} 章', project
             assert '第十四章待续' in page.locator('.project[href="/pytorch-apprentice/"] .tags').inner_text()
             assert '第八章待续' in page.locator('.project[href="/interview-proof-reader/"] .tags').inner_text()
+            assert '第六章待续' in page.locator('.project[href="/langchain-empire-reader/"] .tags').inner_text()
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), ('home overflow', width)
             themes = set()
             for _ in range(3):
@@ -127,7 +129,7 @@ def main():
                 page.locator('.shelf-home').click()
                 assert page.url == BASE + '/'
 
-            # Walk a cycle through all eight projects using the actual switch menu.
+            # Walk a cycle through all nine projects using the actual switch menu.
             projects = list(PROJECTS)
             page.goto(f'{BASE}/{projects[0]}/')
             for project in projects[1:] + projects[:1]:
@@ -157,7 +159,7 @@ def main():
             context.close()
             print(f'PASS: {len(pages)} pages at {width}px', flush=True)
         browser.close()
-    print(f'PASS: home + {len(pages) - 1} reader pages; eight project counts/statuses, local links/anchors/resources, menus, cross-project navigation, home links, three themes, no overflow or JS errors.')
+    print(f'PASS: home + {len(pages) - 1} reader pages; nine project counts/statuses, local links/anchors/resources, menus, cross-project navigation, home links, three themes, no overflow or JS errors.')
 
 
 if __name__ == '__main__':
